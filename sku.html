@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>SKU Generator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #8f0303;
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+    
+    .top-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #550202;
+      color: white;
+      padding: 15px 30px;
+    }
+    .top-nav .logo {
+      font-weight: bold;
+      font-size: 18px;
+    }
+    .top-nav-links a {
+      color: #ccc;
+      text-decoration: none;
+      margin-left: 20px;
+      font-size: 14px;
+    }
+    .top-nav-links a:hover {
+      color: white;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 40px auto;
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+      overflow: hidden;
+    }
+
+  
+    header {
+      background: linear-gradient(135deg, #c50505, #fc0505, #ecf0f4);
+      color: white; 
+      padding: 30px 20px;
+      text-align: center;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 24px;
+    }
+
+    .form-section {
+      padding: 25px;
+    }
+    .form-section label {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 14px;
+      font-weight: bold;
+      color: #333;
+    }
+    .form-section input, 
+    .form-section select {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 14px;
+      box-sizing: border-box;
+    }
+
+    button {
+      display: block;
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(135deg, #fc1404f4, #fffefe);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(67, 100, 247,.4);
+    }
+    button:hover { 
+      opacity: 0.95; 
+    }
+
+    .output {
+      text-align: center;
+      color: #666;
+      margin-top: 25px;
+      font-size: 14px;
+      padding: 0;
+      border: none;
+      background: transparent;
+    }
+
+    
+    .page-footer {
+      text-align: center;
+      padding: 20px;
+      color: #a0c4ff;
+      font-size: 13px;
+    }
+    .page-footer a {
+      color: #fff;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+
+  
+  <div class="top-nav">
+    <div class="logo">Project</div>
+    <div class="top-nav-links">
+      <a href="#">SKU Generator</a>
+      <a href="index.html">Receipt Generator</a>
+    </div>
+  </div>
+
+  <div class="container">
+    
+    <header>
+      <h1>SKU Generator</h1>
+    </header>
+
+    <div class="form-section">
+      <label for="category">Product Category</label>
+        <select id="category">
+        <option value="" disabled selected>Select a category</option>
+        <option value="COF">Coffee</option>
+        <option value="NON">Non-Coffee</option>
+        <option value="SNC">Snacks</option>
+      </select>
+
+      <label for="name">Product Name</label>
+      <input type="text" id="name" placeholder="e.g. LATTE">
+
+      <label for="quantity">Stock Quantity</label>
+      <input type="number" id="quantity" placeholder="e.g. 25">
+
+      <button onclick="generateSKU()">Generate SKU</button>
+
+      <div class="output" id="output">
+        <p>Your generated SKU will appear here.</p>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <script>
+    function generateSKU() {
+      let category = document.getElementById("category").value.trim().toUpperCase();
+      let name = document.getElementById("name").value.trim().toUpperCase();
+      let qty = document.getElementById("quantity").value.trim();
+
+      if (!category || !name || !qty) {
+        document.getElementById("output").innerHTML = "<p>Please fill all fields.</p>";
+        return;
+      }
+
+     
+      let random = Math.floor(Math.random() * 90 + 10);
+      let sku = `${category}-${name}-${qty}${random}`;
+
+      document.getElementById("output").innerHTML = `<p><strong>Generated SKU:</strong> ${sku}</p>`;
+    }
+  </script>
+
+</body>
+</html>

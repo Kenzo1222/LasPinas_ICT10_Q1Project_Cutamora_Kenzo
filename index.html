@@ -1,0 +1,205 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title> Receipt Generator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #8f0303;
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+    .top-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #550202;
+      color: white;
+      padding: 15px 30px;
+    }
+    .top-nav .logo {
+      font-weight: bold;
+      font-size: 18px;
+    }
+    .top-nav-links a {
+      color: #ccc;
+      text-decoration: none;
+      margin-left: 20px;
+      font-size: 14px;
+    }
+    .top-nav-links a:hover {
+      color: white;
+    }
+    .container {
+      max-width: 600px;
+      margin: 40px auto;
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+      overflow: hidden;
+    }
+    header {
+      background: linear-gradient(135deg, #c50505, #fc0505, #ecf0f4);
+      color: white;
+      padding: 30px 20px;
+      text-align: center;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 24px;
+    }
+    header p {
+      margin: 5px 0 0;
+      font-size: 13px;
+      opacity: 0.9;
+    }
+    .menu-section {
+      padding: 25px;
+    }
+    .menu-section h3 {
+      margin-top: 0;
+      font-size: 16px;
+      color: #333;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 10px;
+    }
+    .menu-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 0;
+      border-bottom: 1px solid #f2f2f2;
+    }
+    .menu-item label {
+      font-size: 15px;
+      color: #444;
+    }
+    .menu-item input {
+      width: 60px;
+      padding: 6px;
+      text-align: center;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+    button {
+      display: block;
+      width: 100%;
+      padding: 14px;
+      margin-top: 25px;
+      background: linear-gradient(135deg, #fc1404f4, #fffefe);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+    }
+    button:hover { 
+      opacity: 0.95; 
+    }
+    .summary {
+      text-align: center;
+      color: #666;
+      margin-top: 25px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navigation Bar -->
+  <div class="top-nav">
+    <div class="logo">Skills Test</div>
+    <div class="top-nav-links">
+      <a href="sku.html">SKU Generator</a>
+      <a href="#">Receipt Generator</a>
+    </div>
+  </div>
+
+  <div class="container">
+    <header>
+      <h1>OBMC Entrep Fair</h1>
+      <p>Coffee Shop Reciept Generator</p>
+    </header>
+
+    <div class="menu-section">
+      <h3>Menu</h3>
+      
+      <div class="menu-item">
+        <label>Americano — ₱99</label>
+        <input type="number" min="0" value="0" id="americano">
+      </div>
+      <div class="menu-item">
+        <label>Spanish Latte — ₱129</label>
+        <input type="number" min="0" value="0" id="spanish">
+      </div>
+      <div class="menu-item">
+        <label>Cold Brew Malt — ₱189</label>
+        <input type="number" min="0" value="0" id="coldbrew">
+      </div>
+      <div class="menu-item">
+        <label>Affogato — ₱159</label>
+        <input type="number" min="0" value="0" id="affogato">
+      </div>
+      <div class="menu-item">
+        <label>Caramel Macchiato — ₱129</label>
+        <input type="number" min="0" value="0" id="caramel">
+      </div>
+
+      <button onclick="createOrder()">Create Order</button>
+      
+      <div class="summary" id="summary">
+        Your order summary will appear here.
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Dynamic product catalog containing names and pricing rules
+    const catalog = [
+      { id: "americano", name: "Americano", price: 99 },
+      { id: "spanish", name: "Spanish Latte", price: 129 },
+      { id: "coldbrew", name: "Cold Brew Malt", price: 189 },
+      { id: "affogato", name: "Affogato", price: 159 },
+      { id: "caramel", name: "Caramel Macchiato", price: 129 }
+    ];
+
+    function createOrder() {
+      let orderListHTML = "<h3>Order Summary</h3><ul style='text-align:left; list-style:none; padding:0;'>";
+      let cumulativeTotal = 0;
+      let hasValidSelection = false;
+
+      // Iterate through the dynamic catalog with exception/input handling
+      for (let product of catalog) {
+        const inputElement = document.getElementById(product.id);
+        let quantity = parseInt(inputElement.value);
+
+        // Exception handling: Correct invalid or negative inputs back to 0
+        if (isNaN(quantity) || quantity < 0) {
+          quantity = 0;
+          inputElement.value = 0;
+        }
+
+        if (quantity > 0) {
+          hasValidSelection = true;
+          let itemCost = quantity * product.price;
+          orderListHTML += `<li style="padding: 4px 0;">${quantity} × ${product.name} — ₱${itemCost}</li>`;
+          cumulativeTotal += itemCost;
+        }
+      }
+
+      orderListHTML += `</ul><p style="font-size:16px;"><strong>Total: ₱${cumulativeTotal}</strong></p>`;
+
+      // Render final summary or fallback notice
+      if (!hasValidSelection) {
+        document.getElementById("summary").innerHTML = "Your order summary will appear here.";
+      } else {
+        document.getElementById("summary").innerHTML = orderListHTML;
+      }
+    }
+  </script>
+</body>
+</html>
